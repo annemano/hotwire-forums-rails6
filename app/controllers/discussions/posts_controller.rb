@@ -1,19 +1,19 @@
+# frozen_string_literal: true
+
 module Discussions
   class PostsController < ApplicationController
     before_action :authenticate_user!
     before_action :set_discussion
-    before_action :set_post, only: [:show, :edit, :update]
+    before_action :set_post, only: %i[show edit update destroy]
 
-    def show
-
-    end
+    def show; end
 
     def create
       @post = @discussion.posts.new(post_params)
 
       respond_to do |format|
         if @post.save
-          format.html { redirect_to discussion_path(@discussion), notice: "Post created"}
+          format.html { redirect_to discussion_path(@discussion), notice: 'Post created' }
         else
           format.turbo_stream
           format.html { render :new, status: :unprocessable_entity }
@@ -21,17 +21,24 @@ module Discussions
       end
     end
 
-    def edit
-
-    end
+    def edit; end
 
     def update
       respond_to do |format|
         if @post.update(post_params)
-          format.html { redirect_to @post.discussion, notice: "Post updated"}
+          format.html { redirect_to @post.discussion, notice: 'Post updated' }
         else
           format.html { render :edit, status: :unprocessable_entity }
         end
+      end
+    end
+
+    def destroy
+      @post.destroy
+
+      respond_to do |format|
+        format.turbo_stream { } # let the callback delete the post without refreshing the page
+        format.html { redirect_to @post.discussion, notice: 'Post deleted' }
       end
     end
 

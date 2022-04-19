@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class DiscussionsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_discussion, only: [:show, :edit, :update, :destroy]
+  before_action :set_discussion, only: %i[show edit update destroy]
 
   def index
     @discussions = Discussion.all.order(updated_at: :desc)
@@ -21,22 +23,20 @@ class DiscussionsController < ApplicationController
 
     respond_to do |format|
       if @discussion.save
-        format.html { redirect_to @discussion, notice: "Discussion created" }
+        format.html { redirect_to @discussion, notice: 'Discussion created' }
       else
         format.html { render :new, status: :unprocessable_entity }
       end
     end
   end
 
-  def edit
-
-  end
+  def edit; end
 
   def update
     respond_to do |format|
       if @discussion.update(discussion_params)
-        @discussion.broadcast_replace(partial: "discussions/header", locals: { discussion: @discussion })
-        format.html { redirect_to @discussion, notice: "Discussion updated" }
+        @discussion.broadcast_replace(partial: 'discussions/header', locals: { discussion: @discussion })
+        format.html { redirect_to @discussion, notice: 'Discussion updated' }
       else
         format.html { render :edit, status: :unprocessable_entity }
       end
@@ -45,7 +45,7 @@ class DiscussionsController < ApplicationController
 
   def destroy
     @discussion.destroy!
-    redirect_to discussions_path, notice: "Discussion removed"
+    redirect_to discussions_path, notice: 'Discussion removed'
   end
 
   private
