@@ -11,6 +11,8 @@ class Discussion < ApplicationRecord
 
   delegate :name, prefix: :category, to: :category, allow_nil: true
 
+  scope :pinned_first, -> { order(pinned: :desc, updated_at: :desc) }
+
   broadcasts_to :category, inserts_by: :prepend
   after_create_commit -> { broadcast_prepend_to 'discussions' }
   after_update_commit -> { broadcast_replace_to 'discussions' }
