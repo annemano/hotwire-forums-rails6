@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_26_135509) do
+ActiveRecord::Schema.define(version: 2022_04_28_193223) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,6 +82,14 @@ ActiveRecord::Schema.define(version: 2022_04_26_135509) do
     t.index ["user_id"], name: "index_discussions_on_user_id"
   end
 
+  create_table "pools", force: :cascade do |t|
+    t.string "name"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_pools_on_user_id"
+  end
+
   create_table "posts", force: :cascade do |t|
     t.bigint "discussion_id", null: false
     t.bigint "user_id", null: false
@@ -111,6 +119,7 @@ ActiveRecord::Schema.define(version: 2022_04_26_135509) do
   add_foreign_key "discussion_subscriptions", "discussions"
   add_foreign_key "discussion_subscriptions", "users"
   add_foreign_key "discussions", "users"
+  add_foreign_key "pools", "users"
   add_foreign_key "posts", "discussions"
   add_foreign_key "posts", "users"
 end
