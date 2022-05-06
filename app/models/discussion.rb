@@ -68,7 +68,7 @@ class Discussion < ApplicationRecord
       elsif subscription.subscription_type == "optin"
         "You're receiving notifications because you've subscribed to this thread"
       end
-    elsif
+    elsif posts.where(user_id: user.id).any?
       "You're receiving notifications because you've participated to this thread"
     else
       "You're not receiving notifications from this thread"
